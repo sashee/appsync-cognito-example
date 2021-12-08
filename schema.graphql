@@ -1,0 +1,31 @@
+type Query {
+	test_aws_cognito_user_pools_admin: String
+	@aws_cognito_user_pools(cognito_groups: ["admin"])
+	@aws_iam
+
+	test_aws_cognito_user_pools_user: String
+	@aws_cognito_user_pools(cognito_groups: ["user"])
+	@aws_iam
+
+	test_aws_auth_admin: String
+	@aws_auth(cognito_groups: ["admin"])
+	@aws_iam
+
+	test_aws_auth_user: String
+	@aws_auth(cognito_groups: ["user"])
+	@aws_iam
+
+	test_nothing: String
+
+	test_both_admin: String
+	@aws_cognito_user_pools(cognito_groups: ["admin"])
+	@aws_auth(cognito_groups: ["admin"])
+
+	test_both_user: String
+	@aws_cognito_user_pools(cognito_groups: ["user"])
+	@aws_auth(cognito_groups: ["user"])
+}
+
+schema {
+	query: Query
+}
