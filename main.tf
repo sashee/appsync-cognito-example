@@ -108,9 +108,9 @@ resource "aws_appsync_graphql_api" "appsync_with_iam_iam_first" {
   authentication_type = "AWS_IAM"
   additional_authentication_provider {
     authentication_type = "AMAZON_COGNITO_USER_POOLS"
-		user_pool_config {
-			user_pool_id   = aws_cognito_user_pool.pool.id
-		}
+    user_pool_config {
+      user_pool_id = aws_cognito_user_pool.pool.id
+    }
   }
   log_config {
     cloudwatch_logs_role_arn = aws_iam_role.appsync_logs.arn
@@ -119,23 +119,23 @@ resource "aws_appsync_graphql_api" "appsync_with_iam_iam_first" {
 }
 
 module "appsync_cognito_only_deny" {
-	source = "./modules/appsync_resources"
-	appsync = aws_appsync_graphql_api.appsync_cognito_only_deny
+  source  = "./modules/appsync_resources"
+  appsync = aws_appsync_graphql_api.appsync_cognito_only_deny
 }
 
 module "appsync_cognito_only_allow" {
-	source = "./modules/appsync_resources"
-	appsync = aws_appsync_graphql_api.appsync_cognito_only_allow
+  source  = "./modules/appsync_resources"
+  appsync = aws_appsync_graphql_api.appsync_cognito_only_allow
 }
 
 module "appsync_with_iam_cognito_first" {
-	source = "./modules/appsync_resources"
-	appsync = aws_appsync_graphql_api.appsync_with_iam_cognito_first
+  source  = "./modules/appsync_resources"
+  appsync = aws_appsync_graphql_api.appsync_with_iam_cognito_first
 }
 
 module "appsync_with_iam_iam_first" {
-	source = "./modules/appsync_resources"
-	appsync = aws_appsync_graphql_api.appsync_with_iam_iam_first
+  source  = "./modules/appsync_resources"
+  appsync = aws_appsync_graphql_api.appsync_with_iam_iam_first
 }
 
 # cognito
@@ -161,9 +161,9 @@ resource "aws_cognito_user_group" "user" {
 }
 
 # test user
-resource null_resource cognito_users {
+resource "null_resource" "cognito_users" {
   depends_on = [aws_cognito_user_group.user]
-  provisioner local-exec {
+  provisioner "local-exec" {
     command = <<EOF
 aws \
 	--region ${data.aws_region.current.name} \
@@ -173,7 +173,7 @@ aws \
 	--user-attributes Name=email,Value=user@example.com
 EOF
   }
-  provisioner local-exec {
+  provisioner "local-exec" {
     command = <<EOF
 aws \
 	--region ${data.aws_region.current.name} \
@@ -183,7 +183,7 @@ aws \
 	--group-name ${aws_cognito_user_group.user.name}
 EOF
   }
-  provisioner local-exec {
+  provisioner "local-exec" {
     command = <<EOF
 aws \
 	--region ${data.aws_region.current.name} \
